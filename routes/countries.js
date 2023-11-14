@@ -7,14 +7,14 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:countryId', (req, res) => {
-    const requestedCountryId = parseInt(req.params.countryId, 10);
-    const country = data.countries.find(countryInData => countryInData.id === requestedCountryId);
+    const requestedCountryId = req.params.countryId;
+    const country = data.countries.filter(countryInData => {
+        if (countryInData.id.toString() === requestedCountryId) {
+            return countryInData;
+        }
+    });
 
-    if (!country) {
-        res.status(404).json({ error: 'Country not found' });
-    } else {
-        res.status(200).json(country);
-    }
+    res.status(200).json(country);
 });
 
 module.exports = router;
